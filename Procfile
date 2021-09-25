@@ -1,2 +1,2 @@
-web: gunicorn nails_project.wsgi
+web: gunicorn downloader.wsgi
 release: python manage.py migrate
