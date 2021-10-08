@@ -51,7 +51,7 @@
                     </thead>
                     <tbody>
 {#                    {% for stream in streams %}#}
-                        <tr>
+                        <tr style="background: #00011e">
                             <td>{{ video_streams.resolution }}</td>
                             <td>{{ video_streams_size|floatformat }}MB</td>
                             <td>{{ video_streams.mime_type }}</td>
@@ -60,7 +60,7 @@
 {#                    {% endfor %}#}
                     </tbody>
                 </table>
-                <p class="h3 text-center mt-5 mb-5">Audio Only</p>
+                <p class="h3 text-center mt-5 mb-5" style="color: #5a6268; background: #e9ecef">Audio Only</p>
                 <table class="table mt-5 mb-5">
                     <thead class="thead-light">
                     <tr>
@@ -71,7 +71,7 @@
                     </thead>
                     <tbody>
 {#                    {% for stream in audio %}#}
-                        <tr>
+                        <tr style="background: #00011e">
                             <td>{{ audio_stream_size|floatformat }}MB</td>
                             <td>{{ audio_stream.mime_type }}</td>
                             <td><a href="{{ download_audio }}" target="_blank" download="{{ title }}">Download <i class=" fa fa-download"></i></a></td>
