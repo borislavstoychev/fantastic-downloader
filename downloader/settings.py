@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'downloader.youtube_downloader.apps.YoutobeDownloaderConfig',
-    'crispy_forms'
+    'crispy_forms',
+    'downloader.youtube_scraper'
 ]
 
 MIDDLEWARE = [
@@ -140,4 +141,5 @@ MEDIA_ROOT = join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+YOUTUBE_DATA_API_KEY = os.environ.get('API_KEY')
 

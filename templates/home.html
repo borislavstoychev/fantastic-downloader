@@ -2,20 +2,41 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12 mb-5">
-            <h1 class="display-2 text-center">YouTube Downloader</h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 ml-auto mr-auto">
-            <form action="" method="post">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <input type="submit" value="Download" class="btn btn-outline-primary btn-block">
+{#    <div class="row">#}
+{#        <div class="col-md-12 mb-5">#}
+{#            <h1 class="display-2 text-center">YouTube Downloader</h1>#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="row">#}
+{#        <div class="col-md-6 ml-auto mr-auto">#}
+{#            <form action="" method="post">#}
+{#                {% csrf_token %}#}
+{#                {{ form|crispy }}#}
+{#                <p>#}
+{#                <input type="submit" value="Download" class="btn btn-outline-primary btn-block my-2">#}
+{#                <a href="{% url 'search' %}" class="btn btn-outline-primary btn-block my-2"></a>#}
+{#                </p>#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+     <section class="section text-center">
+        <div class="container">
+            <h1 class="section-heading">Download YouTube media</h1>
+            <p class="lead text-muted">Download video or audio only!</p>
+            <form method="post">
+                <div class="col-md-6 ml-auto mr-auto">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                </div>
+                <p>
+                    <button type="submit" name="submit" value="Download" class="btn btn-outline-primary my-2">Download
+                    </button>
+                    <a href="{% url 'search' %}" class="btn btn-outline-primary my-2">YouTube Search
+                    </a>
+                </p>
             </form>
         </div>
-    </div>
+    </section>
 
     {% if title %}
         <div class="row">
