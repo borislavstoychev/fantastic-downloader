@@ -1,80 +1,72 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 {% load static %}
 {% block content %}
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
     <!-- Custom styles for this template -->
     <link href="{% static 'css/album.css' %}" rel="stylesheet">
 
-<main role="main">
+    <main role="main">
 
-    <section class="section text-center">
-        <div class="container">
-            <h1 class="section-heading">Search YouTube</h1>
-            <p class="lead text-muted">Get the top nine results on YouTube for your query!</p>
-            <form method="POST">
-                <div class="input-group mb-3">
-                    {% csrf_token %}
-                    <input type="text" name="search" class="btn btn-outline-primary btn-block" aria-label="Username">
-                </div>
-                <p>
-                    <button type="submit" name="submit" value="search" class="btn btn-outline-primary my-2">YouTube Search
-                    </button>
-                    <a href="{% url 'home' %}" class="btn btn-outline-primary my-2">Download
-                    </a>
-                </p>
-            </form>
-        </div>
-    </section>
+        <section class="section text-center">
+            <div class="container">
+                <h1 class="section-heading">Search In YouTube</h1>
+                <p class="lead text-muted">Get the top 21 results on YouTube for your query!</p>
+                <form method="POST">
+                    <div class="col-md-6 ml-auto mr-auto">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                    </div>
+                    <p>
+                        <button type="submit" name="submit" value="search" class="btn btn-outline-primary my-2">Search
+                        </button>
+                    </p>
+                </form>
+            </div>
+        </section>
 
-    <div class="album py-5">
-        <div class="container">
-            <div class="row">
-                {% for video in videos %}
-                    <div class="col-md-4">
-                        <div class="card mb-4 shadow-sm">
-                            <img class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                 src="{{ video.thumbnail }}"
-                                 preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
-                                 aria-label="Placeholder: Thumbnail"/>
-                            <div class="card-body">
-                                <p class="card-text" style="color: black">{{ video.title }}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <a type="button" href="{{ video.url }}"
-                                           class="btn btn-sm btn-outline-secondary">View</a>
+        <div class="album py-5">
+            <div class="container">
+                <div class="row">
+                    {% for video in videos %}
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <img class="bd-placeholder-img card-img-top" width="100%" height="225"
+                                     src="{{ video.thumbnail }}"
+                                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                                     aria-label="Placeholder: Thumbnail"/>
+                                <div class="card-body">
+                                    <p class="card-text" style="color: black">{{ video.title }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a type="button" href="{{ video.url }}"
+                                               class="btn btn-sm btn-outline-secondary">View</a>
+                                        </div>
+                                        <small class="text-muted">{{ video.duration }} mins</small>
                                     </div>
-                                    <small class="text-muted">{{ video.duration }} mins</small>
-                                </div>
-                                <p></p>
-                                <div class="text-center">
-                                    <form method="POST" action="{% url 'download' %}">
-                                        {% csrf_token %}
-                                    <input class="text-center" type="hidden" name="download" value="{{ video.url }}">
-                                        <button class="fa fa-download btn btn-sm btn-outline-secondary" type="submit" ><span class="small"> Download</span></button>
-                                    </form>
+                                    <p></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <form method="POST" action="{% url 'video' %}">
+                                            {% csrf_token %}
+                                            <input class="text-center" type="hidden" name="download"
+                                                   value="{{ video.url }}">
+                                            <button class="fa fa-download btn btn-sm btn-outline-secondary"
+                                                    type="submit"><span class="small">Video</span></button>
+                                        </form>
+                                        <form method="POST" action="{% url 'audio' %}">
+                                            {% csrf_token %}
+                                            <input class="text-center" type="hidden" name="download"
+                                                   value="{{ video.url }}">
+                                            <button class="fa fa-download btn btn-sm btn-outline-secondary"
+                                                    type="submit"><span class="small">Audio</span></button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
 
-</main>
+    </main>
 {% endblock %}
