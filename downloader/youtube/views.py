@@ -13,23 +13,19 @@ def download_video(request):
     if request.method == "POST":
         file = request.POST['download']
         video = YouTube(file).streams.get_highest_resolution()
-        new_file = NamedTemporaryFile(suffix='mp4')
-        wrapper = FileWrapper(new_file)
-        video.download(filename=new_file.name, skip_existing=True)
-        response = HttpResponse(wrapper, content_type='video/mp4')
+        response = HttpResponse(video.url, content_type='video/mp4')
         response['Content-Disposition'] = f"attachment; filename={video.title}"
+        response['Content-Length'] = video.filesize
 
         return response
 
 
 def download_audio(request):
     file = request.POST['download']
-    video = YouTube(file).streams.get_audio_only()
-    new_file = NamedTemporaryFile(suffix='mp4')
-    wrapper = FileWrapper(new_file)
-    video.download(filename=new_file.name, skip_existing=True)
-    response = HttpResponse(wrapper, content_type='video/mp4')
-    response['Content-Disposition'] = f"attachment; filename={video.title}"
+    audio = YouTube(file).streams.get_audio_only()
+    response = HttpResponse(audio.url, content_type='video/mp4')
+    response['Content-Disposition'] = f"attachment; filename={audio.title}"
+    response['Content-Length'] = audio.filesize
 
     return response
 
