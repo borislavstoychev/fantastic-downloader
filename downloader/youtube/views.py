@@ -1,9 +1,9 @@
 from wsgiref.util import FileWrapper
 import requests
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse, FileResponse
 from isodate import parse_duration
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from pytube import YouTube
 from django.core.files.temp import NamedTemporaryFile
 from downloader.youtube.forms import DownloadForm
@@ -21,13 +21,14 @@ def download_video(request):
 
 
 def download_audio(request):
-    file = request.POST['download']
-    audio = YouTube(file).streams.get_audio_only()
-    response = HttpResponse(audio.url, content_type='video/mp4')
-    response['Content-Disposition'] = f"attachment; filename={audio.title}"
-    response['Content-Length'] = audio.filesize
+    if request.method == "POST":
+        file = request.POST['download']
+        audio = YouTube(file).streams.get_audio_only()
+        response = FileResponse(audio.url, content_type='video/mp4', as_attachment=True, filename=audio.title)
+        response['Content-Disposition'] = f"attachment; filename={audio.title}"
+        response['Content-Length'] = audio.filesize
 
-    return response
+        return response
 
 
 def video_view(request):
