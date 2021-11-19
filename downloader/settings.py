@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'downloader.youtube_downloader.apps.YoutobeDownloaderConfig',
     'crispy_forms',
-    'downloader.youtube'
+    'downloader.youtube_scraper'
 ]
 
 MIDDLEWARE = [

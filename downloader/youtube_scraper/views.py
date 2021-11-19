@@ -1,49 +1,22 @@
-from wsgiref.util import FileWrapper
 import requests
-from django.http import HttpResponse, StreamingHttpResponse, FileResponse
 from isodate import parse_duration
 from django.conf import settings
 from django.shortcuts import render, redirect
-from pytube import YouTube
-from django.core.files.temp import NamedTemporaryFile
-from downloader.youtube.forms import DownloadForm
-
-
-def download_video(request):
-    if request.method == "POST":
-        file = request.POST['download']
-        video = YouTube(file).streams.get_highest_resolution()
-        response = HttpResponse(video.url, content_type='video/mp4')
-        response['Content-Disposition'] = f"attachment; filename={video.title}"
-        response['Content-Length'] = video.filesize
-
-        return response
-
-
-def download_audio(request):
-    if request.method == "POST":
-        file = request.POST['download']
-        audio = YouTube(file).streams.get_audio_only()
-        response = FileResponse(audio.url, content_type='video/mp4', as_attachment=True, filename=audio.title)
-        response['Content-Disposition'] = f"attachment; filename={audio.title}"
-        response['Content-Length'] = audio.filesize
-
-        return response
 
 
 def video_view(request):
     videos = []
 
     if request.method == 'POST':
-        form = DownloadForm(request.POST)
+
         search_url = 'https://www.googleapis.com/youtube/v3/search'
         video_url = 'https://www.googleapis.com/youtube/v3/videos'
-        form.is_valid()
+
         search_params = {
             'part': 'snippet',
-            'q': form.cleaned_data['url'],
+            'q': request.POST['search'],
             'key': settings.YOUTUBE_DATA_API_KEY,
-            'maxResults': 21,
+            'maxResults': 9,
             'type': 'video'
         }
 
@@ -55,11 +28,14 @@ def video_view(request):
         for result in results:
             video_ids.append(result['id']['videoId'])
 
+        if request.POST['submit'] == 'lucky':
+            return redirect(f'https://www.youtube.com/watch?v={video_ids[0]}')
+
         video_params = {
             'key': settings.YOUTUBE_DATA_API_KEY,
             'part': 'snippet,contentDetails',
             'id': ','.join(video_ids),
-            'maxResults': 21
+            'maxResults': 9
         }
 
         r = requests.get(video_url, params=video_params)
@@ -76,12 +52,9 @@ def video_view(request):
             }
 
             videos.append(video_data)
-    else:
-        return render(request, 'youtube_search.html', {'form': DownloadForm()})
 
     context = {
-        'videos': videos,
-        'form': DownloadForm()
+        'videos': videos
     }
 
     return render(request, 'youtube_search.html', context)
