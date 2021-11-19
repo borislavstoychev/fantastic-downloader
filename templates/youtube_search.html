@@ -1,41 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_filters %}
 {% block content %}
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
     <!-- Custom styles for this template -->
     <link href="{% static 'css/album.css' %}" rel="stylesheet">
 
 <main role="main">
-
     <section class="section text-center">
         <div class="container">
             <h1 class="section-heading">Search YouTube</h1>
-            <p class="lead text-muted">Get the top nine results on YouTube for your query!</p>
-            <form method="POST">
-                <div class="input-group mb-3">
+            <p class="lead text-muted">Get the top 21 results on YouTube for your query!</p>
+            <form method="post" action="{% url 'search' %}">
+                <div class="col-md-6 ml-auto mr-auto">
                     {% csrf_token %}
-                    <input type="text" name="search" class="btn btn-outline-primary btn-block" aria-label="Username">
+                    {{ form|crispy }}
                 </div>
                 <p>
-                    <button type="submit" name="submit" value="search" class="btn btn-outline-primary my-2">YouTube Search
+                    <button type="submit" name="submit" value="Search" class="btn btn-outline-primary my-2">YouTube Search
                     </button>
-                    <a href="{% url 'home' %}" class="btn btn-outline-primary my-2">Download
-                    </a>
                 </p>
             </form>
         </div>

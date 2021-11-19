@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'downloader.youtube_downloader.apps.YoutobeDownloaderConfig',
     'crispy_forms',
-    'downloader.youtube_scraper'
+    'downloader.youtube_search'
 ]
 
 MIDDLEWARE = [

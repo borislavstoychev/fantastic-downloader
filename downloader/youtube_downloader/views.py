@@ -28,20 +28,20 @@ def get_context(url):
     return context
 
 
-def download_home(request):
-    form = DownloadForm(request.POST)
-    if form.is_valid():
-        video_url = form.cleaned_data['url']
-        if not re.match(r'^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+', video_url):
-            return HttpResponse('Enter correct url.')
-        return render(request, 'home.html', get_context(video_url))
-    return render(request, 'home.html', {'form': DownloadForm()})
-
-
 def download_search(request):
     if request.method == "POST":
         url = request.POST['download']
         return render(request, 'home.html', get_context(url))
     return render(request, 'home.html', {'form': DownloadForm()})
+
+
+# def download_home(request):
+#     form = DownloadForm(request.POST)
+#     if form.is_valid():
+#         video_url = form.cleaned_data['url']
+#         if not re.match(r'^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+', video_url):
+#             return HttpResponse('Enter correct url.')
+#         return render(request, 'home.html', get_context(video_url))
+#     return render(request, 'home.html', {'form': DownloadForm()})
 
 

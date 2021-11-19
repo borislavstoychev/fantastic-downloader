@@ -2,37 +2,18 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-{#    <div class="row">#}
-{#        <div class="col-md-12 mb-5">#}
-{#            <h1 class="display-2 text-center">YouTube Downloader</h1>#}
-{#        </div>#}
-{#    </div>#}
-{#    <div class="row">#}
-{#        <div class="col-md-6 ml-auto mr-auto">#}
-{#            <form action="" method="post">#}
-{#                {% csrf_token %}#}
-{#                {{ form|crispy }}#}
-{#                <p>#}
-{#                <input type="submit" value="Download" class="btn btn-outline-primary btn-block my-2">#}
-{#                <a href="{% url 'search' %}" class="btn btn-outline-primary btn-block my-2"></a>#}
-{#                </p>#}
-{#            </form>#}
-{#        </div>#}
-{#    </div>#}
      <section class="section text-center">
         <div class="container">
             <h1 class="section-heading">Download YouTube media</h1>
             <p class="lead text-muted">Download video or audio only!</p>
-            <form method="post">
+            <form method="post" action="{% url 'search' %}">
                 <div class="col-md-6 ml-auto mr-auto">
                     {% csrf_token %}
                     {{ form|crispy }}
                 </div>
                 <p>
-                    <button type="submit" name="submit" value="Download" class="btn btn-outline-primary my-2">Download
+                    <button type="submit" name="submit" value="Search" class="btn btn-outline-primary my-2">YouTube Search
                     </button>
-                    <a href="{% url 'search' %}" class="btn btn-outline-primary my-2">YouTube Search
-                    </a>
                 </p>
             </form>
         </div>
@@ -74,9 +55,9 @@
 {#                    {% for stream in streams %}#}
                         <tr style="background: #00011e">
                             <td>{{ video_streams.resolution }}</td>
-                            <td>{{ video_streams_size|floatformat }}MB</td>
+                            <td>{{ video_streams_size|floatformat:2 }}MB</td>
                             <td>{{ video_streams.mime_type }}</td>
-                            <td><a download="{{ title }}" href="{{ download}}" target="_blank">Download <i class=" fa fa-download"></i></a></td>
+                            <td><a download="{{ title }}" href="{{ download}}" target="_blank" content="video">Download <i class=" fa fa-download"></i></a></td>
                         </tr>
 {#                    {% endfor %}#}
                     </tbody>
@@ -93,7 +74,7 @@
                     <tbody>
 {#                    {% for stream in audio %}#}
                         <tr style="background: #00011e">
-                            <td>{{ audio_stream_size|floatformat }}MB</td>
+                            <td>{{ audio_stream_size|floatformat:2 }}MB</td>
                             <td>{{ audio_stream.mime_type }}</td>
                             <td><a href="{{ download_audio }}" target="_blank" download="{{ title }}">Download <i class=" fa fa-download"></i></a></td>
                         </tr>
